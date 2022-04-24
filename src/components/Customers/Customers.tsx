@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
-import { AlertService, CustomerService } from '../../services';
+import { CustomerService } from '../../services';
+import { fetchCustomers, useTypedDispatch, useTypedSelector } from '../CustomerSlice';
 
 const Customers = (props: any) => {
+    const appDispatch = useTypedDispatch();
     const customerService = CustomerService();
-    let initialList: any = [];
-    const [items, setItems] = useState(initialList)
+
+    const items:[] = useTypedSelector(s => s.customer.items);
 
     useEffect(() => {
-        getData()
+       let filters:any = {};
+       appDispatch(fetchCustomers(filters));
     }, [])
-
-    const getData = async () => {
-        try {
-            let result = await customerService.getCustomers();
-            setItems(result);
-        } catch (err: any) { console.log(err) };
-    }
 
     const deleteCustomer = async (id: any) => {
         try {
             let inputData: any = { id: id }
             await customerService.deleteCustomer(inputData);
-            AlertService.showSuccessMsg();
-            getData();
         } catch (err: any) { console.log(err) };
     }
 
