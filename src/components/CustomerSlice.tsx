@@ -20,6 +20,16 @@ export const fetchCustomers = createAsyncThunk(
     }
 );
 
+export const deleteCustomer = createAsyncThunk(
+    'customers/delete',
+    async (options:any, thunkAPI) => {
+      const customerService:any = CustomerService();
+      let inputData: any = { id: options.id };
+      await customerService.deleteCustomer(inputData);
+      return inputData;
+    }
+);
+
 const customerSlice = createSlice({
     name: "customers-slice",
     initialState: pageState,
@@ -31,7 +41,10 @@ const customerSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchCustomers.fulfilled, (draft, action) => {
             const items:[] = action.payload;
-            draft.items = [...draft.items, ...items];
+            draft.items = items;
+        });
+        builder.addCase(deleteCustomer.fulfilled, (draft, action) => {
+            console.log(action);
         });
     }        
 });

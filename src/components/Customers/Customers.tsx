@@ -1,26 +1,19 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
-import { CustomerService } from '../../services';
-import { fetchCustomers, useTypedDispatch, useTypedSelector } from '../CustomerSlice';
+import {
+    fetchCustomers, deleteCustomer,
+    useTypedDispatch, useTypedSelector
+} from '../CustomerSlice';
 
 const Customers = (props: any) => {
     const appDispatch = useTypedDispatch();
-    const customerService = CustomerService();
-
-    const items:[] = useTypedSelector(s => s.customer.items);
+    const items: [] = useTypedSelector(s => s.customer.items);
 
     useEffect(() => {
-       let filters:any = {};
-       appDispatch(fetchCustomers(filters));
+        let filters: any = {};
+        appDispatch(fetchCustomers(filters));
     }, [])
-
-    const deleteCustomer = async (id: any) => {
-        try {
-            let inputData: any = { id: id }
-            await customerService.deleteCustomer(inputData);
-        } catch (err: any) { console.log(err) };
-    }
 
     return (
         <div className='container'>
@@ -41,7 +34,7 @@ const Customers = (props: any) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {items && items.length > 0 && items.map((item: any, index:any) => (
+                    {items && items.length > 0 && items.map((item: any, index: any) => (
                         <tr key={index}>
                             <td>
                                 {item.first_name} {item.last_name}
@@ -54,7 +47,7 @@ const Customers = (props: any) => {
                                 <Link to={`create/${item.id}`}>
                                     <i className="fas fa-pencil-alt"></i>
                                 </Link>
-                                <span className='ms-3' onClick={e => deleteCustomer(item.id)}>
+                                <span className='ms-3' onClick={e => appDispatch(deleteCustomer(item.id))}>
                                     <i className="far fa-trash-alt text-danger pointer"></i>
                                 </span>
                             </td>

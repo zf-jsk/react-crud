@@ -8,6 +8,15 @@
       "address": "Chennai",
       "description": "Customer",
       "id": 1
+    },
+    {
+      "first_name": "first1",
+      "last_name": "last1",
+      "email": "fl1@a.com",
+      "phone": "12345",
+      "address": "addr1",
+      "description": "desc1",
+      "id": 2
     }
   ]
 }
